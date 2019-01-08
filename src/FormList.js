@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {FlatList, Image, ScrollView, Text, TouchableWithoutFeedback, View} from 'react-native';
 import {requests} from "./utils/requests";
-import {JOURNAL_FORM_API} from "./Urls";
+import {JOURNAL_FORM_API, LOGIN_API} from "./Urls";
 import {Actions} from 'react-native-router-flux';
 import {style} from "./utils/style";
 
@@ -20,7 +20,7 @@ export default class FormList extends Component{
             .then(res=>{
                 console.log(res);
                 this.setState({forms: res})
-            })
+            });
     }
 
     render(){
@@ -31,6 +31,7 @@ export default class FormList extends Component{
                         contentContainerStyle={{padding: style.px1 * 15}}
                         data={this.state.forms}
                         renderItem={({item})=> <FormItem item={item}/>}
+                        keyExtractor={(item, index)=>item.id.toString()}
                     />
                 </ScrollView>
             </View>

@@ -18,7 +18,7 @@ export default class JournalList extends Component{
         requests(JOURNAL_API + `?form=${this.props.form.id}`, 'GET', null)
             .then(promise=>promise.json())
             .then(res=>{
-                console.log(res)
+                console.log(res);
                 this.setState({journals: res})
             })
     }
@@ -30,7 +30,8 @@ export default class JournalList extends Component{
                     <FlatList
                         contentContainerStyle={{padding: style.px1 * 15}}
                         data={this.state.journals}
-                        renderItem={({item})=> <JournalItem item={item}/>}
+                        renderItem={({item})=> <JournalItem key={item.id} item={item}/>}
+                        keyExtractor={(item, index)=>item.id.toString()}
                     />
                 </ScrollView>
             </View>
@@ -48,7 +49,7 @@ class JournalItem extends Component{
         console.log(item);
         return (
             <TouchableWithoutFeedback onPress={()=>{
-                Actions.push('journalWrite',{bgUrl: item.image, formId: item.id})
+                Actions.push('journalWrite',{journal: item})
             }}>
                 <View style={styles.formView}>
                     <Text style={{fontSize: style.px1 * 24, color: '#323232', marginLeft: style.px1 * 10}}>
