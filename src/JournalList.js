@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FlatList, Image, ScrollView, Text, TouchableWithoutFeedback, View} from 'react-native';
+import {FlatList, Alert, ScrollView, Text, TouchableWithoutFeedback, View, Modal} from 'react-native';
 import {requests} from "./utils/requests";
 import {JOURNAL_API} from "./Urls";
 import {Actions} from 'react-native-router-flux';
@@ -11,10 +11,15 @@ export default class JournalList extends Component{
         super(props);
         this.state = {
             journals: [],
+            isCreating: false,
         };
     }
 
     componentWillMount(){
+        this.getList()
+    }
+
+    getList(){
         requests(JOURNAL_API + `?form=${this.props.form.id}`, 'GET', null)
             .then(promise=>promise.json())
             .then(res=>{
@@ -23,12 +28,49 @@ export default class JournalList extends Component{
             })
     }
 
+    onCreate(){
+        Alert.alert(
+            '새 일지 생성',
+            '새로운 일지를 생성하시겠어요?',
+            [
+                {text: '아니오', onPress: ()=>{}},
+                {text: '네', onPress: this.createJournal.bind(this)},
+            ],
+            { cancelable: true }
+        )
+    }
+
+    createJournal(){
+        console.log('CREATE');
+        this.setState({isCreating: true});
+        requests(JOURNAL_API, 'POST', {form: this.props.form.id})
+            .then(promise=>promise.json())
+            .then(res=>{
+                if(res.id){
+                    this.getList();
+                    this.setState({isCreating: false})
+                }
+            })
+    }
+
     render(){
         return(
             <View style={{flex: 1}}>
-                <ScrollView contentContainerStyle={{flex: 1}}>
+                <Modal
+                    visible={this.state.isCreating}
+                    onRequestClose={()=>{}}
+                    transparent>
+                    <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={{fontSize: style.px1 * 16, color: '#fff'}}>생성중입니다...{'\n'}잠시만 기다려 주세요</Text>
+                    </View>
+                </Modal>
+                <ScrollView contentContainerStyle={{flex: 1, padding: style.px1 * 15}}>
+                    <TouchableWithoutFeedback onPress={this.onCreate.bind(this)}>
+                        <View style={{backgroundColor: '#009ACD', justifyContent: 'center', paddingVertical: style.px1 * 15}}>
+                            <Text style={{fontSize: style.px1 * 20, textAlign: 'center', color: '#fff'}}>+ 새 일지 생성</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
                     <FlatList
-                        contentContainerStyle={{padding: style.px1 * 15}}
                         data={this.state.journals}
                         renderItem={({item})=> <JournalItem key={item.id} item={item}/>}
                         keyExtractor={(item, index)=>item.id.toString()}

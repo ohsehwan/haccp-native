@@ -59,7 +59,7 @@ export default class JournalWrite extends Component {
         let data = new FormData();
         let pathArray = path.split('/');
         data.append('image', {uri: 'file://' + path, name: pathArray[pathArray.length - 1], type: 'image/jpg'});
-        requests(JOURNAL_API + this.props.journal.id + '/', 'FILE', data, {method: 'PUT'})
+        requests(JOURNAL_API + this.props.journal.id + '/', 'FILE', data, {method: 'PATCH'})
             .then(promise=>promise.json())
             .then(res=>{
                 if(res.id){
@@ -94,7 +94,7 @@ export default class JournalWrite extends Component {
                             onStrokeChanged={()=>{}}
                             onStrokeEnd={()=>{}}
                             user={null}
-                            strokeWidth={1}
+                            strokeWidth={2}
                             onSketchSaved={this.saveOnServer.bind(this)}
                             onPathsChange={()=>{}}
                             text={null}

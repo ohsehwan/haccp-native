@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "140622091293",
+    "firebase_url": "https://haccp-d4bc8.firebaseio.com",
+    "project_id": "haccp-d4bc8",
+    "storage_bucket": "haccp-d4bc8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:140622091293:android:0a15d9ae8896cb50",
+        "android_client_info": {
+          "package_name": "com.journals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "140622091293-0hh32feijmj310jj3ferteumrvq6aoev.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsxS4S-Kfxsy1QKwOMttcwjTpgUc5FtFY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -101,7 +101,7 @@ export default class PinchZoomView extends Component {
     _handlePanResponderMove = (e, gestureState) => {
         // zoom
         if (gestureState.numberActiveTouches === 2) {
-            evt = e.nativeEvent
+            let evt = e.nativeEvent;
             if(evt.touches[0].locationX < 0 || evt.touches[1].locationX < 0 || evt.touches[0].locationY < 0 || evt.touches[1].locationY < 0){return}
             let dx = Math.abs(
                 e.nativeEvent.touches[0].pageX - e.nativeEvent.touches[1].pageX
@@ -111,28 +111,23 @@ export default class PinchZoomView extends Component {
             );
             let distant = Math.sqrt(dx * dx + dy * dy);
             let scale = (distant / this.distant) * this.state.lastScale;
-            // console.log('Two touch', scale, this.state.offsetX, this.state.offsetY, evt.touches[0].pageX, evt.touches[1].pageY, evt.touches[0].locationX, evt.touches[1].locationY)
-            // console.log(evt.touches[0].locationX, evt.touches[0].locationY)
-            // console.log(evt.touches[0].pageX, evt.touches[0].pageY)
-            // console.log(scale, dx, dy, this.state.lastScale)
             //check scale min to max hello
             if (scale < this.props.maxScale && scale > this.state.minScale) {
-                console.log('SCALE')
-                this.distant = distant
-                let pgX = evt.touches[0].pageX / scale
-                let pgY = evt.touches[0].pageY / scale
+                this.distant = distant;
+                let pgX = evt.touches[0].pageX / scale;
+                let pgY = evt.touches[0].pageY / scale;
                 // console.log(scale)
                 // console.log('Two touch', pgX, pgY, evt.touches[0].locationX, evt.touches[1].locationY)
                 let offsetX = -((this.viewWidth/scale)/2) + (this.viewWidth/2) //to point (0, 0)
                 let offsetY = -((this.viewHeight/scale)/2) + (this.viewHeight/2) + (50/scale) //to point (0, 0)
-                let xDiff = pgX - this.startX
-                let yDiff = pgY - this.startY
+                let xDiff = pgX - this.startX;
+                let yDiff = pgY - this.startY;
                 this.setState({ scale: scale, offsetX: offsetX + xDiff, offsetY: offsetY + yDiff, lastScale: scale, lastMovePinch: true});
             }
         }
         // translate
         else if (gestureState.numberActiveTouches === 1 && this.touchMode !== 'TWO') {
-            evt = e.nativeEvent
+            let evt = e.nativeEvent
             if (this.state.lastMovePinch) {
                 gestureState.dx = 0;
                 gestureState.dy = 0;
@@ -146,7 +141,6 @@ export default class PinchZoomView extends Component {
             // if ( offsetX < 0  || offsetY <  0 )
             this.offsetX = offsetX;
             this.offsetY = offsetY;
-            console.log('One touch', this.offsetX, this.offsetY)
             this.setState({ offsetX, offsetY, lastMovePinch: false });
         }
     };
